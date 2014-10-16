@@ -5,5 +5,5 @@ gemspec
 
 group :test do
   gem "rspec"
-  gem "simplcov"
+  gem "simplecov"
 end
