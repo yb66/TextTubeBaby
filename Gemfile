@@ -6,4 +6,6 @@ gemspec
 group :test do
 	gem "rspec"
 	gem "simplecov"
+	gem "rspec-its"
+	gem "rdiscount"
 end

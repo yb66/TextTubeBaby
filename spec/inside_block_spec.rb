@@ -29,6 +29,6 @@ HTML
 </div>
 HTML
   }
-  subject { TextTube::InsideBlock.run content }
+  subject { TextTube::Baby::InsideBlock.run content }
   it { should == expected }
 end
