@@ -1,8 +1,7 @@
 # encoding: utf-8
 
 require 'spec_helper'
-require_relative "../lib/texttube.rb"
-require_relative "../lib/texttube/filters/coderay.rb"
+require_relative "../lib/texttube/baby/coderay.rb"
 
 module TextTube
   describe TextTube do

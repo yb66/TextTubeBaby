@@ -1,6 +1,5 @@
 require 'spec_helper'
-require_relative "../lib/texttube.rb"
-require_relative "../lib/texttube/filters/inside_block.rb"
+require_relative "../lib/texttube/baby/inside_block.rb"
 
 describe "InsideBlock" do
   let(:content) { <<HTML

@@ -4,7 +4,7 @@ module TextTube
   require 'nokogiri'
   require_relative "../../ext/blank.rb"
   require 'coderay'
-  require_relative "../filterable.rb"
+  require "texttube/filterable"
 
   # a filter for Coderay
   module Coderay

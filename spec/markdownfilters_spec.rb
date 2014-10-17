@@ -1,8 +1,7 @@
 # encoding: UTF-8
 
 require 'spec_helper'
-require_relative '../lib/texttube/base.rb'
-require_relative '../lib/texttube/filterable.rb'
+require 'texttube/base.rb'
 
 describe "TextTube" do
   let(:content) { <<MARKDOWN

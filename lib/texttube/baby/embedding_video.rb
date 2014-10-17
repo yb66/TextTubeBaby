@@ -1,5 +1,5 @@
 # encoding: UTF-8
-require_relative "../filterable.rb"
+require "texttube/filterable"
 
 module TextTube
 
@@ -8,7 +8,7 @@ module TextTube
     extend TextTube::Filterable
   
     filter_with :embeddingvideo do |text|
-      TextTube::EmbeddingVideo.run text
+      run text
     end
 
     # List of available sites.
@@ -17,9 +17,17 @@ module TextTube
       #     :brightcove => ['http://www.brightcove.com/',->(w,h,url){ %Q!! }],
       #     :photobucket => ['http://www.photobucket.com/',->(w,h,url){ %Q!! }],
       :youtube => {
-        name: 'http://www.youtube.com/',
+        name: 'https://www.youtube.com/',
         html: ->(w,h,url){ %Q!<iframe title="YouTube video player" class="youtube-player" type="text/html" width="#{w}" height="#{h}" src="#{url}" frameborder="0"></iframe>!.strip},
-        url_morph: ->(orig){ orig.sub( %r{watch\?v=}, 'embed/') }
+        url_morph: ->(orig){
+        	if orig.match %r{youtube\.com}
+						orig.sub( %r{watch\?v=}, 'embed/')
+					elsif orig.match %r{youtu\.be}
+						orig.sub( %r{youtu\.be}, "www.youtube.com/embed" )
+					else
+						fail ArgumentError, "That is not a youtube link"
+					end
+        }
       },
       #     :dailymotion => ['http://dailymotion.com/',->(w,h,url){ %Q!! }],
       #     :ifilm => ['http://ifilm.com/',->(w,h,url){ %Q!! }],
@@ -60,10 +68,11 @@ module TextTube
 
     # Some standard player sizes.
     SIZES = {
-      small:    [560,345],
-      medium:   [640,390],
-      large:    [853,510],
-      largest:  [1280,750] }
+      small:    {w: 560, h: 345},
+      medium:   {w: 640, h:390},
+      large:    {w: 853, h:510},
+      largest:  {w: 1280, h:750},
+    }
 
 
 
@@ -75,14 +84,16 @@ module TextTube
     #               /?                      # optional trailing slash
     #               }x
 
-    # Pattern for deconstructing [embed_SIZE[url|description]]
-    R_link = /             # [embed_SIZE[url|description]]
-    \[embed\_?([a-z]+)?\[        # opening square brackets
-      (\S+)     # link
-      \|      # separator
-      ([^\[]+)  # description
-      \]\]        # closing square brackets
-      /x
+    # Pattern for deconstructing [video_SIZE[url|description]]
+    R_link = /             		# [video_SIZE[url|description]]
+    	\[video						      # opening square brackets
+    	(?:\_(?<size>[a-z]+))?  # player size (optional)
+    	\[
+      (?<url>[^\|]+)     		  # url
+      \|      								# separator
+      (?<desc>[^\[]+)  			  # description
+      \]\]        						# closing square brackets
+    /x
 
 
     # @param [String] content
@@ -91,18 +102,20 @@ module TextTube
     def self.run(content, options={})
       options ||= {}
       content.gsub( R_link ) { |m|
+				
         size,url,desc = $1,$2,$3
 
-        unless size.nil?
-          res = SIZES[size.to_sym] || SIZES[:medium] #resolution
-        else
-          res = SIZES[:medium]
-        end
+        res = 
+					if size.nil?
+						SIZES[:medium]
+					else
+						SIZES[size.to_sym] || SIZES[:medium] #resolution
+					end
 
         #"res: #{res.inspect} size: #{size}, url:#{url}, desc:#{desc}"
 
         emb_url = SITES[:youtube][:url_morph].(url)
-        SITES[:youtube][:html].(res.first, res.last, emb_url )
+        SITES[:youtube][:html].(res[:w], res[:h], emb_url )
       }
 
     end

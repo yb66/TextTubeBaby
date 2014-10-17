@@ -1,8 +1,10 @@
 # encoding: UTF-8
 
 require 'spec_helper'
-require_relative '../lib/texttube/base.rb'
-require 'texttube/filters/spiffing'
+require_relative '../lib/texttube/baby/spiffing.rb'
+require "texttube/base"
+
+module TextTube # convenience
 
 describe "TextTube" do
   let(:content) { <<CSS
@@ -37,9 +39,11 @@ body {
 EXPECTED
   }
   class CssString < TextTube::Base
-    register TextTube::Spiffing
+    register TextTube::Baby::Spiffing
   end
 
   subject { CssString.new(content).filter }
   it { should == expected }
 end
+
+end # inconvenience
