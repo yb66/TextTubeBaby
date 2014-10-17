@@ -4,6 +4,7 @@ require 'spec_helper'
 require_relative "../lib/texttube/baby/coderay.rb"
 
 module TextTube
+module Baby
   describe TextTube do
     
     let(:coderayed){ 
@@ -35,16 +36,16 @@ HTML
 CODE
             }
   
-            subject { TextTube::Coderay.run content }
+            subject { TextTube::Baby::Coderay.run content }
             it { should_not be_nil }
             it { should == expected }
-            it { should_not == TextTube::Coderay.run(wrong) }
+            it { should_not == TextTube::Baby::Coderay.run(wrong) }
           end
           context "That has no language hint" do
             let(:content) { notrayed }
             let(:expected) { coderayed }
   
-            subject { TextTube::Coderay.run content }
+            subject { TextTube::Baby::Coderay.run content }
             it { should_not be_nil }
             it { should == expected }
           end
@@ -60,7 +61,7 @@ CODE
 CODE
             }
   
-            subject { TextTube::Coderay.run content }
+            subject { TextTube::Baby::Coderay.run content }
             it { should_not be_nil }
             it { should == expected }
           end
@@ -69,18 +70,19 @@ CODE
         context "With no code to be rayed in it" do
           let(:content) { %Q$The[UtterFAIL website](http://utterfail.info/ "UtterFAIL!") is good.$ }
           let(:expected) { content }
-          subject { TextTube::Coderay.run content }
+          subject { TextTube::Baby::Coderay.run content }
           it { should_not be_nil }
           it { should == expected }
         end # context
       end # context
       
       context "Given no text" do
-        subject { TextTube::Coderay.run "" }
+        subject { TextTube::Baby::Coderay.run "" }
         it { should_not be_nil }
         it { should == "" }
       end # context
       
     end # describe Coderay
   end # describe TextTube
+end # Baby
 end # module
