@@ -1,7 +1,10 @@
 # encoding: UTF-8
 
 require 'spec_helper'
-require 'texttube/base.rb'
+require 'rspec/its'
+require 'texttube/base'
+require "texttube/filterable"
+require_relative "../lib/texttube/baby.rb"
 
 describe "TextTube" do
   let(:content) { <<MARKDOWN
@@ -103,18 +106,19 @@ MARKDOWN
     end
   end
   context "Real examples" do
-    require_relative "../lib/texttube.rb"
     require 'rdiscount'
 
     context "An article that needs all the filters" do
       before :all do
-        TextTube.load_all_filters
+        TextTube::Baby.load_all_filters
+        warn "HERE"
+        warn TextTube::Baby.constants
         class MyFilter < TextTube::Base
-          register TextTube::Coderay
-          register TextTube::LinkReffing
-          register TextTube::EmbeddingAudio
-          register TextTube::EmbeddingVideo
-          register TextTube::InsideBlock
+          register TextTube::Baby::Coderay
+          register TextTube::Baby::LinkReffing
+          register TextTube::Baby::EmbeddingAudio
+          register TextTube::Baby::EmbeddingVideo
+          register TextTube::Baby::InsideBlock
           register do
             filter_with :rdiscount do |text|
               RDiscount.new(text).to_html
@@ -243,11 +247,11 @@ rainfall 99_998
 EXPECTED
       }
       before :all do
-        TextTube.load_all_filters
+        TextTube::Baby.load_all_filters
         class MyFilter < TextTube::Base
-          register TextTube::LinkReffing
-          register TextTube::EmbeddingAudio
-          register TextTube::EmbeddingVideo
+          register TextTube::Baby::LinkReffing
+          register TextTube::Baby::EmbeddingAudio
+          register TextTube::Baby::EmbeddingVideo
           register do
             filter_with :rdiscount do |text|
               RDiscount.new(text).to_html
