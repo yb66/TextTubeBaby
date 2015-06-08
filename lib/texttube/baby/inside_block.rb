@@ -1,5 +1,4 @@
 # encoding: UTF-8
-require 'nokogiri'
 require "texttube/filterable"
 require 'oga'
 
