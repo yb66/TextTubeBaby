@@ -85,7 +85,7 @@ module TextTube
 				has_reflinks = false
 
 				links = [] #to store the matches
-			
+
 				text.gsub! Pattern do |md|  #block to pass to gsub
 					has_reflinks = true
 					if kind == :inline

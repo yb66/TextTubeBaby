@@ -1,6 +1,6 @@
 # encoding: UTF-8
-require 'nokogiri'
 require "texttube/filterable"
+require 'oga'
 
 module TextTube
   module Baby
@@ -19,17 +19,19 @@ module TextTube
 			def self.run( content, options={})   
 				options ||= {} 
 				if options[:markdown_parser].nil?
-					require 'rdiscount' 
+					require 'rdiscount'
 					markdown_parser=RDiscount
 				end
-				doc = Nokogiri::HTML::fragment(content) 
+				doc = Oga.parse_html(content)
 			
-				doc.xpath("*[@markdown='1']").each do |ele|  
-					ele.inner_html = markdown_parser.new(ele.inner_html).to_html
-					ele.remove_attribute("markdown")
+				doc.xpath("*[@markdown='1']").each do |ele|
+				  inner_text = ele.children.inject(""){|mem,child| mem << child.to_xml }
+					html_fragment = markdown_parser.new(inner_text).to_html
+					ele.children= Oga.parse_html( html_fragment ).children
+					ele.unset "markdown"
 				end
 			
-				doc.to_s
+				doc.to_xml
 			end # run
 		
 		end
