@@ -8,7 +8,6 @@ module TextTube
 		# @return [Array<String,TrueClass>]
 		def self.load_all_filters filters=nil
 			filters ||= File.join __dir__, "baby/*.rb"
-			warn "filters = #{filters}"
 			Dir.glob( filters )
 				 .reject{|name| name.end_with? "version.rb" }
 				 .map{|filter| 

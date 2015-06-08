@@ -32,10 +32,9 @@ module TextTube
 			# @param [Hash] options
 			def self.run( content, options={})
 				ugly_child = content.dup
-	#       warn ugly_child
+
 				DICTIONARY.each do |english, ugly|
 					ugly_child.sub! english, ugly
-	#         warn ugly_child
 				end
 				ugly_child
 			end
