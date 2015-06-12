@@ -1,6 +1,13 @@
 ## CH CH CH CH CHANGES! ##
 
 
+### Monday the 12th of June 2015, v1.1.1 ###
+
+* Fixed up the README with new info on dropping Nokogiri for Oga, and adding syntax highlighting blocks for Github.
+
+----
+
+
 ### Monday the 8th of June 2015, v1.1.0 ###
 
 * Changed from Nokogiri to Oga because Nokogiri is annoying to install. Having said that, getting a bugfix into Oga was annoying too, so for now it will rely on my patched library, Oga Without the Wimpiness. This will be replaced by Oga in the next release when *it* is next released.
