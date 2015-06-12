@@ -6,6 +6,10 @@ Here are some ready built filters to use with TextTube. If you write any you thi
 
 If you're having a problem with the TextTube::InsideBlock filter on Heroku it could be because of the version of Libxml2 it uses, as [the problem given here states](http://stackoverflow.com/q/8598958/335847), which means Nokogiri won't always work properly on Heroku. When using the InsideBlock filter this can be a problem, so use the `hpricot` branch instead.
 
+### Note! Note!! ###
+
+Because of the problems with Nokogiri, from v6.0.0 it's beem replaced by [Oga](https://github.com/YorickPeterse/oga). If you want alternatives then look in the source for the other versions, or someone could be helpful and send in a plugin with [Ox](https://github.com/ohler55/ox) or some other parser doing the work :)
+
 ## Installation
 
 Add this line to your application's Gemfile:
