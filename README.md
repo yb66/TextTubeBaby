@@ -8,7 +8,7 @@ If you're having a problem with the TextTube::InsideBlock filter on Heroku it co
 
 ### Note! Note!! ###
 
-Because of the problems with Nokogiri, from v6.0.0 it's been replaced by [Oga](https://github.com/YorickPeterse/oga). If you want alternatives then look in the source for the other versions, or someone could be helpful and send in a plugin with [Ox](https://github.com/ohler55/ox) or some other parser doing the work :)
+Because of the problems with Nokogiri, from v1.1.0 it's been replaced by [Oga](https://github.com/YorickPeterse/oga). If you want alternatives then look in the source for the other versions, or someone could be helpful and send in a plugin with [Ox](https://github.com/ohler55/ox) or some other parser doing the work :)
 
 ## Installation
 
