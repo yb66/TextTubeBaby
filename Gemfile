@@ -3,6 +3,9 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in TextTubeBaby.gemspec
 gemspec
 
+group :documentation do
+  gem "yard"
+end
 
 group :development do
   unless RUBY_ENGINE == 'jruby' || RUBY_ENGINE == "rbx"
