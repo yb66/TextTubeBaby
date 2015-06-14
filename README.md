@@ -2,6 +2,14 @@
 
 Here are some ready built filters to use with TextTube. If you write any you think would be useful, send me a pull request!
 
+### Build status ###
+
+Master branch:
+[![Build Status](https://travis-ci.org/yb66/TextTubeBaby.png?branch=master)](https://travis-ci.org/yb66/TextTubeBaby)
+
+Develop branch:
+[![Build Status](https://travis-ci.org/yb66/TextTubeBaby.png?branch=develop)](https://travis-ci.org/yb66/TextTubeBaby)
+
 ### Note! ###
 
 If you're having a problem with the TextTube::InsideBlock filter on Heroku it could be because of the version of Libxml2 it uses, as [the problem given here states](http://stackoverflow.com/q/8598958/335847), which means Nokogiri won't always work properly on Heroku. When using the InsideBlock filter this can be a problem, so use the `hpricot` branch instead.
