@@ -14,9 +14,6 @@ module TextTube
 			filter_with :linkreffing do |text, options|
 				run text, options
 			end
-		
-			# These are the html codes for superscript 0 - 9
-			UNITS = ['&#8304;', '&sup1;', '&sup2;', '&sup3;', '&#8308;', '&#8309;', '&#8310;', '&#8311;', '&#8312;', '&#8313;'] #unicode superscript numbers
 
 			# Matches [[link|description]]
 			Pattern = /              
@@ -33,10 +30,10 @@ module TextTube
 			Reffer = ->(lnk, num){ %Q![#{lnk}](##{num} "Jump to reference")!}
 
 			# A lambda to transform a link and a number to a HTML reference link.
-			RefHTMLer = ->(lnk, num){ %Q!<a href="##{num}" title="Jump to reference">#{lnk}</a>!  }
+			RefHTMLer = ->(lnk, num){ %Q!<a class="ref" id="ref-#{num}" href="#reflink-#{num}" title="Jump to reference"><sup>#{lnk}</sup></a>!  }
 
 			# A lambda to transform a href and a description into an HTML link.
-			HTMLer = ->(lnk, desc){ %Q! <a href="#{lnk}">#{desc}</a>!  }
+			HTMLer = ->(lnk, desc){ %Q! <a class="ref" href="#{lnk}">#{desc}</a>!  }
 
 			# A lambda to transform a link and a description into an inline Markdown link.
 			Markdowner = ->(lnk, desc){ %Q! [#{desc}](#{lnk})! }
@@ -44,9 +41,9 @@ module TextTube
 	#     Noner = ->(_,_) { "" } # this isn't needed but will sit here as a reminder.
 
 
-			# Takes markdown content with ref links and turns it into 100% markdown.
+			# Takes markdown content with ref links and turns it into referenced HTML links (the default) or 100% markdown.
 			# @param [String] content The markdown content with links to ref.
-			# @option options [#to_s] :format The format of the link you want added. The options are :html, :markdown. The default is :markdown
+			# @option options [#to_s] :format The format of the link you want added. The options are :html, :markdown. The default is :html
 			# @option options [#to_s] :kind The kind of link you want added. The options are :reference, :inline, :none. The default is :reference
 			# @option options [String,nil] :div_id ID of the div to wrap reference links in. Defaults to "reflinks". Set to nil or false for no div.
 			# @return [String] The string formatted as markdown e.g. `[http://cheat.errtheblog.com/s/yard/more/and/m...](http://cheat.errtheblog.com/s/yard/more/and/more/and/more/ "http://cheat.errtheblog.com/s/yard/more/and/more/and/more/")`
@@ -56,7 +53,7 @@ module TextTube
 				text = content.dup
 				options ||= {}
 				kind = options.fetch :kind, :reference
-				format = options.fetch( :format, :markdown )
+				format = options.fetch( :format, :html )
 				formatter = if kind == :inline
 											if format == :html
 												HTMLer
@@ -93,14 +90,7 @@ module TextTube
 					elsif kind == :none
 						""
 					else # kind == :reference
-						mags = cur.divmod(10) #get magnitude of number
-						ref_tag = mags.first >= 1 ? 
-												UNITS[mags.first] :
-												'' #sort out tens
-	
-						ref_tag += UNITS[mags.last] #units
-						retval = formatter.(ref_tag,cur)
-										 
+						retval = formatter.(cur,cur)
 						links << [$1, $2, cur] # add to the words list
 						cur += 1 #increase current number
 						retval
@@ -126,7 +116,7 @@ module TextTube
 					display_link = link.length >= 45 ? 
 														link[0,45] + "..." : 
 														link
-					%Q!\n<a name="#{cur}"></a>#{LeftSq}#{cur}#{RightSq} [#{display_link}](#{link} "#{link}") #{description}\n\n!
+					%Q!<p class="reflink" name="reflink-#{cur}" id="reflink-#{cur}"><a class="reflink ref"href="#ref-#{cur}" title="back up">[#{cur}]</a> <a class="reflink" href="#{link}" title="#{link}">#{display_link}</a> #{description}</p>!
 				}.join
 			end
 
