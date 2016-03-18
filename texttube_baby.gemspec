@@ -18,6 +18,6 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 	spec.add_dependency "texttube", ">= 6.0.0"
-  spec.add_dependency "oga-without-the-wimpiness"
+  spec.add_dependency "oga"
   spec.add_dependency "coderay"
 end
